@@ -1,0 +1,37 @@
+artifact_path: file:C:/BALARAM/AI/7_NLP/YT-Sentiment-analysis/mlruns/0/models/m-9197b5abfa364030b1972a66f486c468/artifacts
+flavors:
+  lightgbm:
+    code: null
+    data: model.skops
+    lgb_version: 4.7.0
+    model_class: lightgbm.sklearn.LGBMClassifier
+    serialization_format: skops
+    skops_trusted_types:
+    - lightgbm.sklearn.LGBMRegressor
+    - lightgbm.basic.Booster
+    - collections.OrderedDict
+    - lightgbm.sklearn.LGBMClassifier
+  python_function:
+    data: model.skops
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.lightgbm
+    python_version: 3.14.5
+is_signature_from_type_hint: false
+mlflow_version: 3.15.2
+model_id: m-9197b5abfa364030b1972a66f486c468
+model_size_bytes: 41025
+model_uuid: m-9197b5abfa364030b1972a66f486c468
+prompts: null
+run_id: 47143c32816042f5b3d6de7b5be82800
+saved_input_example_info:
+  artifact_path: input_example.json
+  serving_input_path: serving_input_example.json
+  type: ndarray
+signature:
+  inputs: '[{"type": "tensor", "tensor-spec": {"dtype": "float64", "shape": [-1, 2]}}]'
+  outputs: '[{"type": "tensor", "tensor-spec": {"dtype": "int64", "shape": [-1]}}]'
+  params: null
+type_hint_from_example: false
+utc_time_created: '2026-08-31 11:06:49.621670'

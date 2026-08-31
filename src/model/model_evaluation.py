@@ -2,11 +2,9 @@ import numpy as np
 import pandas as pd
 import pickle
 import logging
-from collections import OrderedDict
 import yaml
 import mlflow
-import mlflow.sklearn
-import lightgbm as lgb
+import mlflow.lightgbm
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.feature_extraction.text import TfidfVectorizer
 import os
@@ -110,13 +108,13 @@ def log_confusion_matrix(cm, dataset_name):
     mlflow.log_artifact(cm_file_path)
     plt.close()
 
-def save_model_info(run_id: str, model_path: str, file_path: str) -> None:
-    """Save the model run ID and path to a JSON file."""
+def save_model_info(run_id: str, model_uri: str, file_path: str) -> None:
+    """Save the model run ID and model URI to a JSON file."""
     try:
         # Create a dictionary with the info you want to save
         model_info = {
             'run_id': run_id,
-            'model_path': model_path
+            'model_uri': model_uri
         }
         # Save the dictionary as a JSON file
         with open(file_path, 'w') as file:
@@ -158,18 +156,17 @@ def main():
             # Infer the signature
             signature = infer_signature(input_example, model.predict(X_test_tfidf[:5]))  # <--- Added for signature
 
-            # Save model info early so DVC output exists even when model logging is strict
-            model_path = "lgbm_model"
-            save_model_info(run.info.run_id, model_path, 'experiment_info.json')
-
-            # Use the supported LightGBM MLflow API instead of sklearn serialization
-            mlflow.lightgbm.log_model(
+            # Use the supported LightGBM MLflow API and keep the exact model URI returned by MLflow.
+            model_info = mlflow.lightgbm.log_model(
                 model,
-                artifact_path="lgbm_model",
+                name="lgbm_model",
                 signature=signature,
                 input_example=input_example,
                 extra_pip_requirements=['lightgbm']
             )
+
+            # Save model info early so DVC output exists and the registry can use the actual model URI.
+            save_model_info(run.info.run_id, model_info.model_uri, 'experiment_info.json')
 
             # Log the vectorizer as an artifact
             mlflow.log_artifact(os.path.join(root_dir, 'tfidf_vectorizer.pkl'))
