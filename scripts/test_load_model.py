@@ -28,7 +28,7 @@ repo_name = "YT-Sentiment-analysis"
 mlflow.set_tracking_uri(f'{dagshub_url}/{repo_owner}/{repo_name}.mlflow')
 
 @pytest.mark.parametrize("model_name, stage", [
-    ("yt_chrome_plugin_model", "staging"),])
+    ("yt_chrome_plugin_model", "Staging"),])
 def test_load_latest_staging_model(model_name, stage):
     client = MlflowClient()
     

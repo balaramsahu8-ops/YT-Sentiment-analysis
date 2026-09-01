@@ -75,3 +75,15 @@ jobs:
           YT_DAGSHUB_TOKEN: ${{ secrets.YT_DAGSHUB_TOKEN }}
         run: |
           pytest scripts/test_model_signature.py
+
+      - name: Run model performance test
+        env:
+          YT_DAGSHUB_TOKEN: ${{ secrets.YT_DAGSHUB_TOKEN }}
+        run: |
+          pytest scripts/test_model_performance.py
+
+      - name: Promote model to production
+        if: success()
+        env:
+          YT_DAGSHUB_TOKEN: ${{ secrets.YT_DAGSHUB_TOKEN }}
+        run: python scripts/promote_model.py
