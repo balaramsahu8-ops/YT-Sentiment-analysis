@@ -32,7 +32,10 @@ dagshub_url = "https://dagshub.com"
 repo_owner = "balaram.sahu8"
 repo_name = "YT-Sentiment-analysis"
 
-# Set up MLflow tracking URI
+# # Set up MLflow tracking URI
+# import dagshub
+# dagshub.init(repo_owner='balaram.sahu8', repo_name='YT-Sentiment-analysis', mlflow=True)
+# mlflow.set_tracking_uri("https://dagshub.com/balaram.sahu8/YT-Sentiment-analysis.mlflow")
 
 
 
@@ -144,6 +147,7 @@ def save_model_info(run_id: str, model_uri: str, file_path: str) -> None:
         raise
 
 def main():
+    # mlflow.set_tracking_uri("https://dagshub.com/balaram.sahu8/YT-Sentiment-analysis.mlflow")
     mlflow.set_tracking_uri(f'{dagshub_url}/{repo_owner}/{repo_name}.mlflow')
 
     mlflow.set_experiment('dvc-pipeline-runs')
@@ -178,7 +182,7 @@ def main():
             # Use the supported LightGBM MLflow API and keep the exact model URI returned by MLflow.
             model_info = mlflow.lightgbm.log_model(
                 model,
-                name="lgbm_model",
+                artifact_path="lgbm_model",
                 signature=signature,
                 input_example=input_example,
                 extra_pip_requirements=['lightgbm']
