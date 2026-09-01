@@ -4,11 +4,28 @@ import json
 import mlflow
 import logging
 import os
+import dagshub
 
 # Set up MLflow tracking URI
-import dagshub
-dagshub.init(repo_owner='balaram.sahu8', repo_name='YT-Sentiment-analysis', mlflow=True)
-mlflow.set_tracking_uri("https://dagshub.com/balaram.sahu8/YT-Sentiment-analysis.mlflow")
+
+# Set up DagsHub credentials for MLflow tracking
+dagshub_token = os.getenv("YT_DAGSHUB_TOKEN")
+if not dagshub_token:
+    raise EnvironmentError("YT_DAGSHUB_TOKEN environment variable is not set")
+
+os.environ["MLFLOW_TRACKING_USERNAME"] = dagshub_token
+os.environ["MLFLOW_TRACKING_PASSWORD"] = dagshub_token
+
+dagshub_url = "https://dagshub.com"
+repo_owner = "balaram.sahu8"
+repo_name = "YT-Sentiment-analysis"
+
+# Set up MLflow tracking URI
+mlflow.set_tracking_uri(f'{dagshub_url}/{repo_owner}/{repo_name}.mlflow')
+
+# import dagshub
+# dagshub.init(repo_owner='balaram.sahu8', repo_name='YT-Sentiment-analysis', mlflow=True)
+# mlflow.set_tracking_uri("https://dagshub.com/balaram.sahu8/YT-Sentiment-analysis.mlflow")
 
 
 # logging configuration

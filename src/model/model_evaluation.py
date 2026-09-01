@@ -13,8 +13,27 @@ import seaborn as sns
 import json
 from mlflow.models import infer_signature
 
+# import dagshub
+# dagshub.init(repo_owner='balaram.sahu8', repo_name='YT-Sentiment-analysis', mlflow=True)
+
 import dagshub
-dagshub.init(repo_owner='balaram.sahu8', repo_name='YT-Sentiment-analysis', mlflow=True)
+
+# Set up MLflow tracking URI
+
+# Set up DagsHub credentials for MLflow tracking
+dagshub_token = os.getenv("YT_DAGSHUB_TOKEN")
+if not dagshub_token:
+    raise EnvironmentError("YT_DAGSHUB_TOKEN environment variable is not set")
+
+os.environ["MLFLOW_TRACKING_USERNAME"] = dagshub_token
+os.environ["MLFLOW_TRACKING_PASSWORD"] = dagshub_token
+
+dagshub_url = "https://dagshub.com"
+repo_owner = "balaram.sahu8"
+repo_name = "YT-Sentiment-analysis"
+
+# Set up MLflow tracking URI
+
 
 
 # logging configuration
@@ -125,7 +144,7 @@ def save_model_info(run_id: str, model_uri: str, file_path: str) -> None:
         raise
 
 def main():
-    mlflow.set_tracking_uri("https://dagshub.com/balaram.sahu8/YT-Sentiment-analysis.mlflow")
+    mlflow.set_tracking_uri(f'{dagshub_url}/{repo_owner}/{repo_name}.mlflow')
 
     mlflow.set_experiment('dvc-pipeline-runs')
     
