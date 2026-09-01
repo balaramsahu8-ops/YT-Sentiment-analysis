@@ -69,3 +69,9 @@ jobs:
           YT_DAGSHUB_TOKEN: ${{ secrets.YT_DAGSHUB_TOKEN }}
         run: |
           pytest scripts/test_load_model.py
+
+      - name: Run model signature test
+        env:
+          YT_DAGSHUB_TOKEN: ${{ secrets.YT_DAGSHUB_TOKEN }}
+        run: |
+          pytest scripts/test_model_signature.py
