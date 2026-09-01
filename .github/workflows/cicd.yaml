@@ -29,6 +29,6 @@ jobs:
 
       - name: Run pipeline
         env:
-          DAGSHUB_PAT: ${{ secrets.YT_DAGSHUB_TOKEN }} 
+          YT_DAGSHUB_TOKEN: ${{ secrets.YT_DAGSHUB_TOKEN }}
         run: |
           dvc repro
